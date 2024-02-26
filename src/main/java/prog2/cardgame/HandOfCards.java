@@ -9,4 +9,18 @@ public class HandOfCards {
   public HandOfCards(List<PlayingCard> hand) {
     this.hand = hand;
   }
+
+  public List<PlayingCard> getHand() {
+    return hand;
+  }
+
+  public boolean hasFlush() {
+    char suit = hand.get(0).getSuit();
+    for (PlayingCard card : hand) {
+      if (card.getSuit() != suit) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

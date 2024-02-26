@@ -3,6 +3,7 @@ package prog2.cardgame;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Represents a deck of playing cards. A deck has 52 cards, 13 of each suit.
@@ -29,10 +30,9 @@ public class DeckOfCards {
   /**
    * Shuffles the deck of cards and deals n cards from the deck.
    */
-  public List<PlayingCard> dealHand(int n) {
-    if (n < 0 || n > cards.size()) {
-      throw new IllegalArgumentException("Cannot deal " + n + " cards.");
-    }
+  public List<PlayingCard> dealHand() {
+    Random random = new Random();
+    int n = random.nextInt(52);
     Collections.shuffle(cards);
     return cards.subList(0, n);
   }

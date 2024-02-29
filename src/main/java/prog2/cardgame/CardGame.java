@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class HelloApplication extends Application {
+public class CardGame extends Application {
   private TextField sumField;
   private TextField heartsField;
   private TextField queenOfSpadesField;

@@ -3,7 +3,8 @@ package prog2.cardgame;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class HandOfCards {
@@ -17,36 +18,26 @@ public class HandOfCards {
   }
 
   public int getSum() {
-    int sum = 0;
-    for (PlayingCard card : hand) {
-      sum += card.getFace();
-    }
-    return sum;
+    AtomicInteger sum = new AtomicInteger();
+    hand.forEach(card -> sum.addAndGet(card.getFace()));
+    return sum.get();
   }
 
   public List<PlayingCard> getHearts() {
     List<PlayingCard> hearts = new ArrayList<>();
-    for (PlayingCard card : hand) {
-      if (card.getSuit() == 'H') {
-        hearts.add(card);
-      }
-    }
+    hand.stream().filter(card -> card.getSuit() == 'H').forEach(hearts::add);
     return hearts;
   }
 
   public boolean containsQueenOfSpades() {
-    boolean containsQueenOfSpades = false;
-    for (PlayingCard card : hand) {
-      if (card.getSuit() == 'S' && card.getFace() == 12) {
-        containsQueenOfSpades = true;
-      }
-    }
-    return containsQueenOfSpades;
+    return hand.stream().anyMatch(card -> card.getSuit() == 'S' && card.getFace() == 12);
   }
 
   public boolean hasFlush() {
-    Map<Character, Long> suitCounts = hand.stream().collect(Collectors.groupingBy(PlayingCard::getSuit,
-        Collectors.counting()));
-    return suitCounts.values().stream().anyMatch(count -> count >= 5);
+    return hand.stream()
+            .collect(Collectors.groupingBy(PlayingCard::getSuit, Collectors.counting()))
+            .values()
+            .stream()
+            .anyMatch(count -> count >= 5);
   }
 }
